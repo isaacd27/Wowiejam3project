@@ -8,6 +8,10 @@ public class Deadlyobject : MonoBehaviour
     GameObject player;
     [SerializeField]
     private Scene Curlevel;
+    [SerializeField]
+    public float startX;
+    [SerializeField]
+    public float startY;
 
     void Awake()
     {
@@ -26,9 +30,17 @@ public class Deadlyobject : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-           if(Curlevel == SceneManager.GetSceneByName("Level7"))
+            Deathcounter.instance.deaths += 1;
+            if (Curlevel == SceneManager.GetSceneByName("Level7"))
             {
+
+                SoundScript.playeffect("Playerdeath");
                 player.transform.position = new Vector2(-4.47f,5.03f);
+            }
+            else
+            {
+                SoundScript.playeffect("Playerdeath");
+                player.transform.position = new Vector2(startX, startY);
             }
         }
     }

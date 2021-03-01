@@ -22,7 +22,10 @@ public class UIbehaviour : MonoBehaviour
         Application.Quit();
     }
 
-
+    public void Menu()
+    {
+        SceneManager.LoadScene(0);
+    }
 
     // Update is called once per frame
 

@@ -1,21 +1,34 @@
-﻿using System.Collections;
+﻿
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundScript : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static AudioClip playerJumpSound, Playerdeath,coin;
+    public static AudioClip playerJumpSound, Playerdeath,coin,spring;
 
-    static AudioSource audio;
+    static AudioSource audiop;
+
+    private IEnumerator currentlanechange;
 
     void Start()
     {
         playerJumpSound = Resources.Load<AudioClip>("Jump");
 
-        coin = Resources.Load<AudioClip>("Pickup_Coin4");
+        coin = Resources.Load<AudioClip>("Coin");
 
-        audio = GetComponent<AudioSource>();
+        Playerdeath = Resources.Load<AudioClip>("Hit_Hurt5");
+
+        spring = Resources.Load<AudioClip>("Spring");
+
+        audiop = GetComponent<AudioSource>();
+
+        //currentlanechange = Ensureplayed();
+       // StartCoroutine(currentlanechange);
+
+
     }
 
     // Update is called once per frame
@@ -30,19 +43,40 @@ public class SoundScript : MonoBehaviour
         {
         case "playerJumpSound":
 
-                audio.PlayOneShot(playerJumpSound);
+                audiop.PlayOneShot(playerJumpSound);
+                // currentlanechange = Ensureplayed();
+                //new WaitForSeconds(audiop.clip.length);
                 break;
           
         case "Playerdeath":
-                //audio.PlayOneShot(Playerdeath);
+                audiop.PlayOneShot(Playerdeath);
+               //new WaitForSeconds(audiop.clip.length);
                 break;
 
         case "coin":
-                audio.PlayOneShot(coin);
+                audiop.PlayOneShot(coin);
+              
                 break;
 
+            case "spring":
+                audiop.PlayOneShot(spring);
+                
+                break;
 
         }
     }
+
+    IEnumerator Ensureplayed ()
+    {
+        //Print the time of when the function is first called.
+        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(audiop.clip.length);
+
+        //After we have waited 5 seconds print the time again.
+        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+    }
+
 
 }

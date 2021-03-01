@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [ RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class Inputhandler : MonoBehaviour
 {
     [SerializeField] private LayerMask PlatformLayerMask;
@@ -17,7 +18,7 @@ public class Inputhandler : MonoBehaviour
     int walkpara;
     int leftpara;
 
-    bool wassound = false;
+ 
 
     State CurrentState;
 
@@ -108,7 +109,10 @@ public class Inputhandler : MonoBehaviour
 
        if (vNew == 1)
         {
-            SoundScript.playeffect("playerJumpSound");
+            if (IsGrounded()) {
+                SoundScript.playeffect("playerJumpSound");
+            }
+           
         }
 
         //Debug.Log(hNew);
@@ -146,11 +150,7 @@ public class Inputhandler : MonoBehaviour
       
             if (!IsGrounded())
             {
-            if (!wassound)
-            {
-               
-                wassound = true;
-            }
+         
            // 
            
             force = new Vector2((hNew * speed), (0));
@@ -158,7 +158,7 @@ public class Inputhandler : MonoBehaviour
             }
         else {
 
-                wassound = false;
+              
                 force = new Vector2((hNew * speed), (vNew * Jump));
             
                
@@ -170,9 +170,12 @@ public class Inputhandler : MonoBehaviour
 
             if (IsGrounded())
             {
+                Debug.Log("Triggered");
+                SoundScript.playeffect("Playerdeath");
+                 Deathcounter.instance.deaths += 1;
+                // transform.position = new Vector3(-21.12f, 1.87f);
                 SceneManager.LoadScene("Level9");
-
-
+                //Debug.Log("reminder: change this back");
             }
           
         }
